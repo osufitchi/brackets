@@ -1,7 +1,9 @@
-from bracket.models import Bracket, Competitor, Competition
+from models import Bracket, Competitor, Competition, BracketForm
 from django.shortcuts import redirect, render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.template import RequestContext
 
 class RichUserCreationForm(UserCreationForm):
     first_name = forms.CharField(label = "First name")
@@ -20,13 +22,24 @@ class RichUserCreationForm(UserCreationForm):
 def register(request):
     if request.method == 'POST':
            form = RichUserCreationForm(request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            return HttpResponseRedirect("/login/")
+           if form.is_valid():
+               new_user = form.save()
+               return HttpResponseRedirect("/login/")
     else:
-            form = RichUserCreationForm()
+           form = RichUserCreationForm()
     return render_to_response("registration/register.html", {
         'form': form,
     },context_instance=RequestContext(request))
 
-
+def bracket_create(request):
+    if request.method == 'POST':
+           form = BracketForm(request.POST)
+           if form.is_valid():
+              new_user = form.save()
+              return HttpResponseRedirect("/login/")
+    else:
+           form = BracketForm()
+    return render_to_response("registration/register.html", {
+        'form': form,
+    },context_instance=RequestContext(request))
+    
