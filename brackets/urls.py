@@ -19,5 +19,5 @@ urlpatterns = patterns('',
      url(r'^admin/', include(admin.site.urls)),
      url(r'^newuser/$',register),
      url(r'^welcome/$',TemplateView.as_view(
-         template_name='registration/welcometohtml.html'))
+         template_name='base.html'))
 )
