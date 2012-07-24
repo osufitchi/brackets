@@ -14,34 +14,45 @@
 
   <body>
     <header>
-      <h1>Bracket App - TITLE OF TOURNAMENT (CHANGE)</h1>
-    </header>
+    <h1>Bracket App - TITLE OF TOURNAMENT (CHANGE)</h1>
     
     <nav>
     <ul>
-    <li><a href="#">Login/Logout BS</a></li>
+    {% if user.is_authenticated %}
+    <li><a href="#">My Account</a></li>
+    <li><a href="/logout/">Logout</a></li>
+    {% else %}
+    <li><a href="/login/">Login</a></li>
+    <li><a href="/register/">Create Account</a></li>
+    {% endif %}
     </ul>
     </nav>
+    </header>
 
+    <br>
     <aside>
     <div>
     <ul>
-    <li><a href="#">Create New Brackets</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about/">About Us / Contact</a></li>
+    </ul>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+    <ul>
     <li><a href="#">Modify Your Brackets</a></li>
+    <li><a href="/create/">Create New Brackets</a></li>
     <li><a href="#">Delete Tournament</a></li>
     </ul>
     </div>
-    <div>
-    <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About Us / Contact</a></li>
-    </ul>
-    </div>
     </aside>
-
-    <section>
-    <p> sample </p>
-    </section>
+    <section id="main-content">
+    {% block maincontent %}
+    <p> This is where the app will be. </p>
+    {% endblock %}</section>
 
     <footer>
     {% block footer %}{% endblock %}

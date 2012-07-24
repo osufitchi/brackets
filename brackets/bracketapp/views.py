@@ -4,15 +4,19 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.template import RequestContext
+from django.contrib.auth.views import login
 
 class RichUserCreationForm(UserCreationForm):
     first_name = forms.CharField(label = "First name")
     last_name = forms.CharField(label = "Last name")
-    
+    email = forms.EmailField(label = "Email")
+
     def save(self, commit=True):
         user = super(RichUserCreationForm, self).save(commit=False)
         first_name =self.cleaned_data["first_name"]
         last_name =self.cleaned_data["last_name"]
+        email =self.cleaned_data["email"]
+        user.email = email
         user.first_name = first_name
         user.last_name = last_name
         if commit:

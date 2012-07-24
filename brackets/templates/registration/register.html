@@ -1,4 +1,40 @@
-<form action='/register' method='post'>
-{{form}}
-<input type="submit" value="Submit" />
-</form>
+{% extends "base.html" %}
+{% block title %}Create a new account{% endblock %}
+{% block maincontent %}
+
+<h1>Create a new account</h1>
+<form action="" method="post">
+{% csrf_token %}
+<div class="fieldWrapper">
+  <p>Username</p>
+    {{ form.username }}
+    {{ form.username.errors.as_text }}
+    </div>
+    <div class="fieldWrapper">
+    <p>Password</p>
+    {{ form.password1 }}
+    {{ form.password1.errors.as_text }}
+    </div>
+    <div class="fieldWrapper">
+    <p>Confirm Password</p>
+    {{ form.password2 }}
+    {{ form.password2.errors.as_text }}
+    </div>
+    <div class="fieldWrapper">
+    <p>First name</p>
+    {{ form.first_name }}
+    {{ form.first_name.errors.as_text }}
+    </div>
+    <div class="fieldWrapper">
+    <p>Last name</p>
+    {{ form.last_name }}
+    {{ form.last_name.errors.as_text }}
+    </div>
+    <div class="fieldWrapper">
+    <p>Email</p>
+    {{ form.email }}
+    {{ form.email.errors.as_text }}
+    </div>
+    <input type="submit" value="Create the account">
+    </form>
+    {% endblock %}

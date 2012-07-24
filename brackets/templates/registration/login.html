@@ -1,6 +1,7 @@
-{%load url from future %}
+{% extends "base.html" %}
+{% load url from future %}
 
-{% block content %}
+{% block maincontent %}
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
