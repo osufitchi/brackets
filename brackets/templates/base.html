@@ -14,12 +14,12 @@
 
   <body>
     <header>
-    <h1>Bracket App - TITLE OF TOURNAMENT (CHANGE)</h1>
+    <h1>Bracket App</h1>
     
     <nav>
     <ul>
     {% if user.is_authenticated %}
-    <li><a href="#">My Account</a></li>
+    <li><a href="/account/">My Account</a></li>
     <li><a href="/logout/">Logout</a></li>
     {% else %}
     <li><a href="/login/">Login</a></li>
@@ -43,9 +43,8 @@
     <br>
     <div>
     <ul>
-    <li><a href="#">Modify Your Brackets</a></li>
+    <li><a href="/list/">Pre-existing Brackets</a></li>
     <li><a href="/create/">Create New Brackets</a></li>
-    <li><a href="#">Delete Tournament</a></li>
     </ul>
     </div>
     </aside>
