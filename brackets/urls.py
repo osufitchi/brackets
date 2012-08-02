@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from bracketapp.views import register,BracketCreateView, BracketModify
+from bracketapp.views import register,BracketCreateView, BracketModify, BracketDetailView, UnresolvedCompetitionListView
 from django.views.generic import (TemplateView, RedirectView, CreateView,
     ListView, DetailView)
 from django.contrib.auth.decorators import login_required
@@ -24,7 +24,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
      url(r'^admin/', include(admin.site.urls)),
      url(r'^register/$',register),
-     url(r'^bracket/(?P<pk>\d+)/$',DetailView.as_view(model=Bracket, template_name='bracket_detail.html')),
+     url(r'^bracket/(?P<pk>\d+)/$',BracketDetailView.as_view(model=Bracket, template_name='bracket_detail.html')),
+     url(r'^bracket/(?P<pk>\d+)/contest_resolve/$',UnresolvedCompetitionListView.as_view(template_name='competition_resolver.html')),
      url(r'^home/$',TemplateView.as_view(
          template_name='base.html')),
      url(r'^login/$', login),

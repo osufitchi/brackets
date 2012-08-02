@@ -5,8 +5,10 @@
     <title>{% block title %}Bracket App{% endblock %}</title>
     <style type="text/css">
     @import url(/static/styles/style.css);
-    </style>
+    {% block styles %}
+    {% endblock %}
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </style>
     </script>
     {% block scripts %}
     {% endblock %}
@@ -60,5 +62,4 @@
     <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">
     <strong> CSS </strong> Valid! </a>
     </footer>
-  </body>
 </html>
