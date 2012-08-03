@@ -71,12 +71,24 @@ class CompetitorForm(forms.Form):
        for i in xrange(fields):
            self.fields['Seed_%i' % i] = forms.CharField()
 
+
+class WinnerForm(forms.Form):
+
+   def __init__(self,*args,**kwargs):
+       self.competition = Competition.objects.get(id=kwargs.pop("competition"))
+       combined_list  = set([self.competition.competitor_a.pk,self.competition.competitor_b.pk]) 
+       self.fields['winner']= forms.ModelChoiceField(queryset=Competitor.objects.filter(pk__in = combined_list))
+       super(WinnerForm,self).__init__(*args,**kwargs)
+
+
 class BracketDetailView(DetailView):
     def get_context_data(self,**kwargs):
         context = super(BracketDetailView,self).get_context_data(**kwargs)
         for seed in xrange(self.object.maxnum):
             context["seed_%i" % seed] = self.object.competitor_set.get(seed=seed)
         return context
+
+
 class BracketModify(FormView):
     form_class = CompetitorForm
     template_name = "modify.html"
@@ -100,6 +112,21 @@ class BracketModify(FormView):
        
     def get_success_url(self):
         return "/bracket/%i" % int(self.kwargs["pk"])
+
+   
+
+
+def winner_form(self,request):
+    if request.method == "POST":
+        form = WinnerForm(request.POST)
+        if form.is_valid():
+           return form.items()
+        else:
+           return "Aww..."
+    else:
+        form = WinnerForm()
+    return render_to_response(request,'herpderp.html',{'form':form})
+
 
 class UnresolvedCompetitionListView(ListView):
     def dispatch(self, request, *args, **kwargs):

@@ -26,6 +26,7 @@ urlpatterns = patterns('',
      url(r'^register/$',register),
      url(r'^bracket/(?P<pk>\d+)/$',BracketDetailView.as_view(model=Bracket, template_name='bracket_detail.html')),
      url(r'^bracket/(?P<pk>\d+)/contest_resolve/$',UnresolvedCompetitionListView.as_view(template_name='competition_resolver.html')),
+     url(r'^bracket/(?P<pk>\d+)/contest_resolve/(?P<competition>\d+)/$','brackets.bracketapp.views.winner_form'),
      url(r'^home/$',TemplateView.as_view(
          template_name='base.html')),
      url(r'^login/$', login),

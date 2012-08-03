@@ -32,6 +32,7 @@ class Competitor(models.Model):
 class Competition(models.Model):
     tourny_round = models.IntegerField(default = 1)
     bracket = models.ForeignKey(Bracket)
+    is_first = models.BooleanField(default=False)
     competitor_a = models.ForeignKey(Competitor,related_name="competitor_a_set")
     competitor_b = models.ForeignKey(Competitor,related_name="competitor_b_set")
     winner = models.ForeignKey(Competitor,null=True,blank=True,related_name="win_set")
