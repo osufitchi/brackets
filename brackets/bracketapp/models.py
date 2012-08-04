@@ -29,6 +29,12 @@ class Competitor(models.Model):
     def __unicode__(self):
         return self.name
 
+class RoundTwo(models.Model):
+    guyone = models.CharField(max_length=30)
+    guytwo = models.CharField(max_length=30)
+    guythree = models.CharField(max_length=30)
+    guyfour = models.CharField(max_length=30)
+
 class Competition(models.Model):
     tourny_round = models.IntegerField(default = 1)
     bracket = models.ForeignKey(Bracket)
