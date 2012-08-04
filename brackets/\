@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{object.title}}{% endblock %}
+{% block maincontent %}
+<h1>{{object.title}}</h1>
+{% for competitor in object.competitor_set.all $}
+<a href="/modify/{{object.id}}"/>Update Bracket</a>
+{% endfor %}
+{% endblock %}

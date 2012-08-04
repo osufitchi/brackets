@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}My Account{% endblock %}
+{% block maincontent %}
+{% for user in object_list %}
+
+<h1>My Account</h1>
+<p>Username: {{user.username}}</p>
+<p>Name: {{user.first_name}} {{user.last_name}}</p>
+<p>Email: {{user.email}}</p>
+<br>
+<p><a href="/account/">Update My Account</a></p>
+{% endfor %}
+{% endblock %}

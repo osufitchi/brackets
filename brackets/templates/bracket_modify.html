@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Modify a bracket{% endblock %}
+{% block maincontent %}
+{% csrf_token %}
+
+<h1>Modify a bracket</h1>
+<form action="" method="post">
+<div class="fieldWrapper">
+  <p>Title of Tournament</p>
+  {{ form.title }}
+  {{ form.title.errors.as_text }}
+</div>
+
+

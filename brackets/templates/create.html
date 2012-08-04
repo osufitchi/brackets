@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Create a new bracket{% endblock %}
+{% block maincontent %}
+
+<h1>Create a new bracket</h1>
+<form action="" method="post">{% csrf_token %}
+{{ form.non_field_errors }}
+<div class="fieldWrapper">
+  <p>Title of Tournament</p>
+  {{ form.title }}
+  {{ form.title.errors.as_text }}
+</div>
+<div class="fieldWrapper"
+  <p>Number of Competitors</p>
+  {{ form.maxnum }}
+  {{ form.maxnum.errors.as_text }}
+</div>
+<input type="submit" value="Add bracket">
+</form>
+{% endblock %}

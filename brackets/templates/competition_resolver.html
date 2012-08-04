@@ -1,0 +1,12 @@
+<DOCTYPE html>
+{% extends "base.html" %}
+{% block styles %}
+{% endblock %}
+{% block maincontent %}
+<body>
+{% for object in object_list %}
+{{ object }}
+{% endfor %}
+</body>
+{% endblock %}
+</html>
