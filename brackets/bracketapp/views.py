@@ -58,7 +58,7 @@ class BracketCreateView(CreateView):
             competitor.seed = person
             competitor.save()
         for i  in  range(self.object.maxnum / 2 ):
-            comp = Competition(bracket=self.object,competitor_a=Competitor.objects.get(bracket=self.object,seed=seeds[i]),competitor_b=Competitor.objects.get(bracket=self.object,seed=seeds[-(i+1)]))
+            comp = Competition(bracket=self.object,competitor_a=Competitor.objects.get(bracket=self.object,seed=seeds[2 * i]),competitor_b=Competitor.objects.get(bracket=self.object,seed=seeds[2 * i + 1]))
             comp.save()
         return super(BracketCreateView, self).form_valid(form)
 
@@ -81,6 +81,12 @@ class WinnerForm(forms.Form):
 class BracketDetailView(DetailView):
     def get_context_data(self,**kwargs):
         context = super(BracketDetailView,self).get_context_data(**kwargs)
+        num_rounds = 3
+        for round in range(num_rounds):
+            comps = Competition.objects.filter(bracket=self.object.id, tourny_round=round+1)
+            for index, comp in enumerate(comps):
+                key = 'comp_%s_%s' % (round + 1, index + 1)
+                context[key] = comp
         for seed in xrange(self.object.maxnum):
             context["seed_%i" % seed] = self.object.competitor_set.get(seed=seed)
         return context

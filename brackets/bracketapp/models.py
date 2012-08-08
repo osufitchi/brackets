@@ -33,4 +33,4 @@ class Competition(models.Model):
     winner = models.ForeignKey(Competitor,null=True,blank=True,related_name="win_set")
     
     def __unicode__(self):
-        return "[%s] %s vs %s" % (self.bracket,self.competitor_a, self.competitor_b)
+        return "[%s] [%s] %s vs %s" % (self.bracket, self.tourny_round, self.competitor_a, self.competitor_b)
