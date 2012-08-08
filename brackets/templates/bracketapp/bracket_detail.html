@@ -12,7 +12,9 @@
     <div class="round3-topwrap">
         <div class="round3-top">Top finalist</div>
         <div class="round2-topwrap">
-            <div class="round2-top">Round top top</div>
+            <div class="round2-top">
+            {% if object.winner %}Round top top{% endif %}
+            </div>
             <div class="round1-top">{{seed_0}}</div>
             <div class="round1-bottom">{{seed_1}}</div>
         </div>
@@ -35,7 +37,7 @@
             <div class="round1-bottom">{{seed_7}}</div>
         </div>
     </div>
-</div>
+  </div>
 </body>
 <a href="/modify/{{object.id}}"/>Update Bracket</a>
 {% endblock %}

@@ -4,8 +4,9 @@
 {% endblock %}
 {% block maincontent %}
 <body>
+<ul>
 {% for object in object_list %}
-{{ object }}
+<li><a href="{{object.id}}/"> {{ object }}</li>
 {% endfor %}
 </body>
 {% endblock %}

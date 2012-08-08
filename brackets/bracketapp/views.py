@@ -57,14 +57,11 @@ class BracketCreateView(CreateView):
             competitor.pk = None
             competitor.seed = person
             competitor.save()
-        if self.object.maxnum % 2 != 0:
-            null_competitor = Competitor(bracket=self.object,is_dummy=True)
-            null_competitor.seed = person
-            null_competitor.save()
         for i  in  range(self.object.maxnum / 2 ):
             comp = Competition(bracket=self.object,competitor_a=Competitor.objects.get(bracket=self.object,seed=seeds[i]),competitor_b=Competitor.objects.get(bracket=self.object,seed=seeds[-(i+1)]))
             comp.save()
         return super(BracketCreateView, self).form_valid(form)
+
 class CompetitorForm(forms.Form):
    def __init__(self,fields, *args, **kwargs):
        super(CompetitorForm,self).__init__(*args,**kwargs)
@@ -76,9 +73,9 @@ class WinnerForm(forms.Form):
 
    def __init__(self,*args,**kwargs):
        self.competition = Competition.objects.get(id=kwargs.pop("competition"))
+       super(WinnerForm,self).__init__(*args,**kwargs)
        combined_list  = set([self.competition.competitor_a.pk,self.competition.competitor_b.pk]) 
        self.fields['winner']= forms.ModelChoiceField(queryset=Competitor.objects.filter(pk__in = combined_list))
-       super(WinnerForm,self).__init__(*args,**kwargs)
 
 
 class BracketDetailView(DetailView):
@@ -109,23 +106,22 @@ class BracketModify(FormView):
             comp.name = form.cleaned_data["Seed_%i" % seed]
             comp.save()
         return super(BracketModify,self).form_valid(form)
-       
     def get_success_url(self):
         return "/bracket/%i" % int(self.kwargs["pk"])
 
-   
-
-
-def winner_form(self,request):
+def winner_form(request,pk,competition):
     if request.method == "POST":
-        form = WinnerForm(request.POST)
+        form = WinnerForm(request.POST,competition=competition)
         if form.is_valid():
-           return form.items()
-        else:
-           return "Aww..."
+          comp =  Competition.objects.get(id=competition)
+          comp.winner = form.cleaned_data['winner']
+          comp.save()
+          check_bracket_round_complete(pk)
+          return HttpResponseRedirect('/')
+        
     else:
-        form = WinnerForm()
-    return render_to_response(request,'herpderp.html',{'form':form})
+        form = WinnerForm(competition=competition)
+    return render_to_response('herpderp.html',{'form':form},RequestContext(request))
 
 
 class UnresolvedCompetitionListView(ListView):
@@ -134,3 +130,31 @@ class UnresolvedCompetitionListView(ListView):
         self.queryset = Competition.objects.filter(bracket = kwargs['pk'], tourny_round=bracket.tourny_round,winner=None)
         return super(UnresolvedCompetitionListView, self).dispatch(request,*args, **kwargs)
 
+def zigzag(seq):
+  results = []
+  for i, e in enumerate(seq):
+    results.append((i,e))
+  return results
+
+def check_bracket_round_complete(bracket):
+    if Competition.objects.filter(bracket = bracket,winner=None):
+        pass
+    else:
+        br = Bracket.objects.get(id=bracket)
+        br.tourny_round += 1 
+        br.save()
+        compnum = Competition.objects.filter(bracket = br.id, tourny_round=br.tourny_round - 1).count()  / 2
+
+        #obvious bug here, try to fix it at some point
+        # hint: it's only a problem if more then one person is using the site at a time ~~ hey are you there?? :(
+        winnerlist = Competition.objects.values_list('winner',flat=True).filter(tourney_round = br.tourney_round - 1).exclude(winner=None).order_by('id')
+        players=zigzag(winnerlist)
+
+        for player_a, player_b in players:
+            comp = Competition(bracket = br, tourny_round = br.tourny_round,commit = False)
+            comp.competitor_a = player_a
+            comp.competitor_b = player_b
+            comp.save()
+
+            
+        
